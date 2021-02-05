@@ -119,6 +119,9 @@ function startGame () {
             console.log("down");
             turnSnake("down");
         }
+        if (e.code == "KeyP") {
+            console.log(allSnakeBodyElements[0].getBoundingClientRect());
+        }
     });
 }
 
