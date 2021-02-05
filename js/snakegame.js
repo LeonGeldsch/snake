@@ -166,7 +166,8 @@ function turnSnake (direction) {
 
 
 function startGame () {
-    console.log("starting game..");
+    tickSpeed = document.querySelector(".tick-speed-input").value;
+    console.log("starting game.. tick speed:", tickSpeed);
     movementInterval = setInterval(moveSnakeForward, tickSpeed * 1000);
     document.addEventListener('keydown', keyDownListener);
 }
