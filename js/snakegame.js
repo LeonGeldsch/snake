@@ -55,26 +55,12 @@ function rotateElement (element, degree) {
 
 function moveSnakeForward() {
     console.log(allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left, allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top);
-    switch (allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left) {
-        case -15:
-            stopGame();
-            return;
-        case 505:        
-            stopGame();
-            return;
-        default:
-            break;
+
+    if (allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left >= 500 || allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left <= 0 || allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top >= 500 || allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top <= 0) {
+        stopGame();
+        return;
     }
-    switch (allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top) {
-        case -15:
-            stopGame();
-            return;
-        case 505:        
-            stopGame();
-            return;
-        default:
-            break;
-    }
+
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
         switch (allSnakeBodyElements[i].getAttribute("data-direction")) {
             case "left":
