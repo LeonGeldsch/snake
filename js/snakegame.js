@@ -55,6 +55,26 @@ function rotateElement (element, degree) {
 
 function moveSnakeForward() {
     console.log(allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left, allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top);
+    switch (allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left) {
+        case -15:
+            stopGame();
+            return;
+        case 505:        
+            stopGame();
+            return;
+        default:
+            break;
+    }
+    switch (allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top) {
+        case -15:
+            stopGame();
+            return;
+        case 505:        
+            stopGame();
+            return;
+        default:
+            break;
+    }
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
         switch (allSnakeBodyElements[i].getAttribute("data-direction")) {
             case "left":
@@ -85,31 +105,12 @@ function moveSnakeForward() {
                 break;
         }
     }
-    switch (allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left) {
-        case 5:
-            stopGame();
-            break;
-        case 485:        
-            stopGame();
-            break;
-        default:
-            break;
-    }
-    switch (allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top) {
-        case 5:
-            stopGame();
-            break;
-        case 485:        
-            stopGame();
-            break;
-        default:
-            break;
-    }
 }
 
 
 function stopGame () {
     clearInterval(movementInterval);
+    clearInterval(turnInterval);
     setTimeout(resetGame, 1000);
 }
 
@@ -168,6 +169,12 @@ function startGame () {
     console.log("starting game..");
     movementInterval = setInterval(moveSnakeForward, tickSpeed * 1000);
     document.addEventListener('keydown', keyDownListener);
+}
+
+
+
+function spawnFood () {
+
 }
 
 
