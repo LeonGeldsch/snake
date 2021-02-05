@@ -6,9 +6,32 @@ var gameArea = document.querySelector(".play-area");
 
 var movementInterval;
 
+var turnInterval;
+
 var tickSpeed = 0.25;
 
 var startButton = document.querySelector(".start-button");
+
+var keyDownListener = function(e) {
+    if (e.code == "ArrowLeft") {
+        console.log("left");
+        turnSnake("left");
+    }
+    if (e.code == "ArrowRight") {
+        console.log("right");
+        turnSnake("right");
+    }
+    if (e.code == "ArrowUp") {
+        console.log("up");
+        turnSnake("up");
+    }
+    if (e.code == "ArrowDown") {
+        console.log("down");
+        turnSnake("down");
+    }
+    if (e.code == "KeyP") {
+    }
+};
 
 
 // give the percentage width of an element in pixel
@@ -31,6 +54,7 @@ function rotateElement (element, degree) {
 
 
 function moveSnakeForward() {
+    console.log(allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left, allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top);
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
         switch (allSnakeBodyElements[i].getAttribute("data-direction")) {
             case "left":
@@ -61,6 +85,46 @@ function moveSnakeForward() {
                 break;
         }
     }
+    switch (allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left) {
+        case 5:
+            stopGame();
+            break;
+        case 485:        
+            stopGame();
+            break;
+        default:
+            break;
+    }
+    switch (allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top) {
+        case 5:
+            stopGame();
+            break;
+        case 485:        
+            stopGame();
+            break;
+        default:
+            break;
+    }
+}
+
+
+function stopGame () {
+    clearInterval(movementInterval);
+    setTimeout(resetGame, 1000);
+}
+
+function resetGame () {
+    console.log("resetting game..");
+    allSnakeBodyElements.forEach(element => {
+        gsap.to(element, {
+            x: 0,
+            y: 0,
+            duration: 1
+        });
+        element.setAttribute('data-direction', 'right')
+        rotateElement(element, 0);
+    });
+    document.removeEventListener('keydown', keyDownListener);
 }
 
 
@@ -68,9 +132,9 @@ function turnSnake (direction) {
 
     let turnVar = 0;
 
-    var interval3 = setInterval(function() {
+    var turnInterval = setInterval(function() {
         if (turnVar >= allSnakeBodyElements.length) {
-            clearInterval(interval3);
+            clearInterval(turnInterval);
             return;
         }
     
@@ -94,37 +158,20 @@ function turnSnake (direction) {
             default:
                 break;
         }
-    
         turnVar++;
     }, tickSpeed * 1000)
 }
 
 
+
 function startGame () {
-    var interval2 = setInterval(moveSnakeForward, tickSpeed * 1000);
-    document.addEventListener('keydown', function(e) {
-        if (e.code == "ArrowLeft") {
-            console.log("left");
-            turnSnake("left");
-        }
-        if (e.code == "ArrowRight") {
-            console.log("right");
-            turnSnake("right");
-        }
-        if (e.code == "ArrowUp") {
-            console.log("up");
-            turnSnake("up");
-        }
-        if (e.code == "ArrowDown") {
-            console.log("down");
-            turnSnake("down");
-        }
-        if (e.code == "KeyP") {
-            console.log(allSnakeBodyElements[0].getBoundingClientRect());
-        }
-    });
+    console.log("starting game..");
+    movementInterval = setInterval(moveSnakeForward, tickSpeed * 1000);
+    document.addEventListener('keydown', keyDownListener);
 }
 
 
 
 startButton.addEventListener('click', startGame);
+
+console.log(allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left, allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top);
