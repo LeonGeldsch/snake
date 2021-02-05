@@ -12,6 +12,14 @@ var tickSpeed = 0.25;
 
 var startButton = document.querySelector(".start-button");
 
+var snakeFood = document.querySelector(".snake-food");
+
+var snakeFoodX;
+
+var snakeFoodY;
+
+var score = 0;
+
 var keyDownListener = function(e) {
     if (e.code == "ArrowLeft") {
         console.log("left");
@@ -54,14 +62,34 @@ function rotateElement (element, degree) {
 
 
 function moveSnakeForward() {
-    console.log(allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left, allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top);
 
-    if (allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left >= 480 && allSnakeBodyElements[0].getAttribute("data-direction") == "right" || allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left <= 20 && allSnakeBodyElements[0].getAttribute("data-direction") == "left" || allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top >= 480 && allSnakeBodyElements[0].getAttribute("data-direction") == "down" || allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top <= 20 && allSnakeBodyElements[0].getAttribute("data-direction") == "up") {
+
+    let snakeHeadX = allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left;
+    let snakeHeadY = allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top;
+    let snakeHeadDirection = allSnakeBodyElements[0].getAttribute("data-direction");
+
+    console.log(snakeHeadX, snakeHeadY);
+
+    if (snakeHeadX >= 480 && snakeHeadDirection == "right" || snakeHeadX <= 20 && snakeHeadDirection == "left" || snakeHeadY >= 480 && snakeHeadDirection == "down" || snakeHeadY <= 20 && snakeHeadDirection == "up") {
         stopGame();
         return;
     }
 
+
+    if (((snakeHeadX - 5) == snakeFoodX) && ((snakeHeadY - 5) == snakeFoodY)) {
+        score++;
+        console.log("YUM! score:", score);
+        spawnFood();
+    }
+
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
+
+
+
+
+
+
+
         switch (allSnakeBodyElements[i].getAttribute("data-direction")) {
             case "left":
                 gsap.to(allSnakeBodyElements[i], {
@@ -156,11 +184,24 @@ function startGame () {
     console.log("starting game.. tick speed:", tickSpeed);
     movementInterval = setInterval(moveSnakeForward, tickSpeed * 1000);
     document.addEventListener('keydown', keyDownListener);
+    spawnFood();
 }
 
 
 
 function spawnFood () {
+    snakeFoodX = Math.floor(Math.random() * 25) * 20;
+    snakeFoodY = Math.floor(Math.random() * 25) * 20;
+
+    gsap.to(snakeFood, {
+        x: snakeFoodX,
+        y: snakeFoodY,
+        duration: 0
+    })
+
+
+    console.log(snakeFoodX, snakeFoodY);
+
 
 }
 
@@ -168,4 +209,4 @@ function spawnFood () {
 
 startButton.addEventListener('click', startGame);
 
-console.log(allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left, allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top);
+
