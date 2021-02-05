@@ -97,33 +97,31 @@ function turnSnake (direction) {
     
         turnVar++;
     }, tickSpeed * 1000)
-
-
 }
 
 
 function startGame () {
     var interval2 = setInterval(moveSnakeForward, tickSpeed * 1000);
+    document.addEventListener('keydown', function(e) {
+        if (e.code == "ArrowLeft") {
+            console.log("left");
+            turnSnake("left");
+        }
+        if (e.code == "ArrowRight") {
+            console.log("right");
+            turnSnake("right");
+        }
+        if (e.code == "ArrowUp") {
+            console.log("up");
+            turnSnake("up");
+        }
+        if (e.code == "ArrowDown") {
+            console.log("down");
+            turnSnake("down");
+        }
+    });
 }
 
 
-document.addEventListener('keydown', function(e) {
-    if (e.code == "ArrowLeft") {
-        console.log("left");
-        turnSnake("left");
-    }
-    if (e.code == "ArrowRight") {
-        console.log("right");
-        turnSnake("right");
-    }
-    if (e.code == "ArrowUp") {
-        console.log("up");
-        turnSnake("up");
-    }
-    if (e.code == "ArrowDown") {
-        console.log("down");
-        turnSnake("down");
-    }
-});
 
 startButton.addEventListener('click', startGame);
