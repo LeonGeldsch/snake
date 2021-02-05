@@ -4,11 +4,11 @@ var allSnakeBodyElements = document.querySelectorAll(".snake-body-element");
 
 var gameArea = document.querySelector(".play-area");
 
-//var movementDirection = "right";
-
-var turnVar = 0;
-
 var movementInterval;
+
+var tickSpeed = 0.25;
+
+var startButton = document.querySelector(".start-button");
 
 
 // give the percentage width of an element in pixel
@@ -35,22 +35,26 @@ function moveSnakeForward() {
         switch (allSnakeBodyElements[i].getAttribute("data-direction")) {
             case "left":
                 gsap.to(allSnakeBodyElements[i], {
-                    y: "+=20"
+                    y: "+=20",
+                    duration: tickSpeed
                 });
                 break;
             case "right":
                 gsap.to(allSnakeBodyElements[i], {
-                    y: "-=20"
+                    y: "-=20",
+                    duration: tickSpeed
                 });
                 break;
             case "up":
                 gsap.to(allSnakeBodyElements[i], {
-                    x: "-=20"
+                    x: "-=20",
+                    duration: tickSpeed
                 });
                 break;
             case "down":
                 gsap.to(allSnakeBodyElements[i], {
-                    x: "+=20"
+                    x: "+=20",
+                    duration: tickSpeed
                 });
                 break;
             default:
@@ -62,73 +66,64 @@ function moveSnakeForward() {
 
 function turnSnake (direction) {
 
-    if (turnVar >= allSnakeBodyElements.length) {
-        return;
-    }
+    let turnVar = 0;
 
-    switch (direction) {
-        case "up":
-            rotateElement(allSnakeBodyElements[turnVar], 90);
-            allSnakeBodyElements[turnVar].setAttribute('data-direction', 'up');
-            break;
-        case "left":
-            rotateElement(allSnakeBodyElements[turnVar], 180);
-            allSnakeBodyElements[turnVar].setAttribute('data-direction', 'left');
-            break;
-        case "down":
-            rotateElement(allSnakeBodyElements[turnVar], 90);
-            allSnakeBodyElements[turnVar].setAttribute('data-direction', 'down');
-            break;
-        case "right":
-            rotateElement(allSnakeBodyElements[turnVar], 0);
-            allSnakeBodyElements[turnVar].setAttribute('data-direction', 'right');
-            break;
-        default:
-            break;
-    }
+    var interval3 = setInterval(function() {
+        if (turnVar >= allSnakeBodyElements.length) {
+            clearInterval(interval3);
+            return;
+        }
+    
+        switch (direction) {
+            case "up":
+                rotateElement(allSnakeBodyElements[turnVar], 270);
+                allSnakeBodyElements[turnVar].setAttribute('data-direction', 'up');
+                break;
+            case "left":
+                rotateElement(allSnakeBodyElements[turnVar], 180);
+                allSnakeBodyElements[turnVar].setAttribute('data-direction', 'left');
+                break;
+            case "down":
+                rotateElement(allSnakeBodyElements[turnVar], 90);
+                allSnakeBodyElements[turnVar].setAttribute('data-direction', 'down');
+                break;
+            case "right":
+                rotateElement(allSnakeBodyElements[turnVar], 0);
+                allSnakeBodyElements[turnVar].setAttribute('data-direction', 'right');
+                break;
+            default:
+                break;
+        }
+    
+        turnVar++;
+    }, tickSpeed * 1000)
 
-    turnVar++;
 
 }
 
+
+function startGame () {
+    var interval2 = setInterval(moveSnakeForward, tickSpeed * 1000);
+}
 
 
 document.addEventListener('keydown', function(e) {
     if (e.code == "ArrowLeft") {
         console.log("left");
-        turnVar = 0;
-        clearInterval(movementInterval);
-        movementInterval = setInterval(function() {
-            turnSnake("left")
-            moveSnakeForward();
-        }, 500)
+        turnSnake("left");
     }
     if (e.code == "ArrowRight") {
         console.log("right");
-        turnVar = 0;
-        clearInterval(movementInterval);
-        movementInterval = setInterval(function() {
-            turnSnake("right")
-            moveSnakeForward();
-        }, 500)
+        turnSnake("right");
     }
     if (e.code == "ArrowUp") {
         console.log("up");
-        turnVar = 0;
-        clearInterval(movementInterval);
-        movementInterval = setInterval(function() {
-            turnSnake("up")
-            moveSnakeForward();
-        }, 500)
+        turnSnake("up");
     }
     if (e.code == "ArrowDown") {
         console.log("down");
-        turnVar = 0;
-        clearInterval(movementInterval);
-        movementInterval = setInterval(function() {
-            turnSnake("down")
-            moveSnakeForward();
-        }, 500)
+        turnSnake("down");
     }
 });
 
+startButton.addEventListener('click', startGame);

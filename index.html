@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.jpg">
 </head>
 <body>
-    <h1 class="main-heading">SNAKE GAME</h1>
+    <h1 class="main-heading">SNAKE GAME (use arrow keys to change direction)</h1>
     <div class="game-area">
-            <div class="snake">
-                <div class="snake-body-element" data-direction="right">
-                    <div class="snake-eye"></div>
-                    <div class="snake-eye"></div>
-                </div>
-                <div class="snake-body-element" data-direction="right"></div>
-                <div class="snake-body-element" data-direction="right"></div>
-                <div class="snake-body-element" data-direction="right"></div>
+        <div class="snake">
+            <div class="snake-body-element" data-direction="right">
+                <div class="snake-eye"></div>
+                <div class="snake-eye"></div>
             </div>
+            <div class="snake-body-element" data-direction="right"></div>
+            <div class="snake-body-element" data-direction="right"></div>
+            <div class="snake-body-element" data-direction="right"></div>
+        </div>
+    </div>
+    <button class="start-button">START</button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script src="js/snakegame.js"></script>
 </body>
