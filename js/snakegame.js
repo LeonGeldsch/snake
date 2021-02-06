@@ -192,7 +192,7 @@ function stopGame () {
     clearInterval(movementInterval);
     clearInterval(turnInterval);
     alert("ded");
-    
+
 }
 
 function resetGame () {
@@ -215,6 +215,7 @@ function resetGame () {
     rotateElement(allSnakeBodyElements[0], 0);
 
     document.removeEventListener('keydown', keyDownListener);
+    startButton.addEventListener('click', startGame);
 }
 
 
@@ -278,6 +279,7 @@ function startGame () {
     }
 
 
+    startButton.removeEventListener('click', startGame);
 
 
     tickSpeed = document.querySelector(".tick-speed-input").value;
