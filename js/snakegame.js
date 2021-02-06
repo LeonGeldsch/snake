@@ -24,26 +24,32 @@ var score = 0;
 
 var startingSnakeElements = 5;
 
+var gameStarted = false;
+
 var keyDownListener = function(e) {
+    console.log(e.code);
     if (e.code == "ArrowLeft") {
         console.log("left");
-        turnSnake("left");
+        if (gameStarted) turnSnake("left");
     }
     if (e.code == "ArrowRight") {
         console.log("right");
-        turnSnake("right");
+        if (gameStarted) turnSnake("right");
     }
     if (e.code == "ArrowUp") {
         console.log("up");
-        turnSnake("up");
+        if (gameStarted) turnSnake("up");
     }
     if (e.code == "ArrowDown") {
         console.log("down");
-        turnSnake("down");
+        if (gameStarted) turnSnake("down");
     }
-    if (e.code == "KeyP") {
+    if (e.code == "Enter") {
+        console.log("enter");
+        if (!gameStarted) startGame();
     }
 };
+
 
 
 // give the percentage width of an element in pixel
@@ -75,27 +81,28 @@ function fullOpacity (element) {
 function moveSnakeForward() {
 
 
-    let snakeHeadX = allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left - 5
-    let snakeHeadY = allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left + 100
+    let snakeHeadX = allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left - 10;
+    let snakeHeadY = allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.getBoundingClientRect().top - 10;
     let snakeHeadDirection = allSnakeBodyElements[0].getAttribute("data-direction");
 
-    console.log(snakeHeadX, snakeHeadY);
+    console.log(snakeHeadX, snakeHeadY, snakeFoodX, snakeFoodY);
 
     
-    if (snakeHeadX >= 480 && snakeHeadDirection == "right" || snakeHeadX <= 0 && snakeHeadDirection == "left" || snakeHeadY >= 480 && snakeHeadDirection == "down" || snakeHeadY <= 0 && snakeHeadDirection == "up") {
+    if (snakeHeadX >= 475 && snakeHeadDirection == "right" || snakeHeadX <= 0 && snakeHeadDirection == "left" || snakeHeadY >= 475 && snakeHeadDirection == "down" || snakeHeadY <= 0 && snakeHeadDirection == "up") {
         stopGame();
         resetGame();
         return;
     }
     
 
-    if ((snakeHeadX == snakeFoodX) && (snakeHeadY == snakeFoodY)) {
+    if ((snakeHeadX + 5 == snakeFoodX) && (snakeHeadY + 5 == snakeFoodY)) {
         score++;
         console.log("YUM! score:", score);
         spawnFood();
+        //stopGame();
 
         let snakeEndX = allSnakeBodyElements[allSnakeBodyElements.length-1].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left - 5;
-        let snakeEndY = allSnakeBodyElements[allSnakeBodyElements.length-1].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left + 100;
+        let snakeEndY = allSnakeBodyElements[allSnakeBodyElements.length-1].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.getBoundingClientRect().top - 5;
         let snakeEndDirection = allSnakeBodyElements[allSnakeBodyElements.length-1].getAttribute("data-direction");
         let newSnakeElement = document.createElement("div");
         newSnakeElement.classList.add("snake-body-element");
@@ -189,29 +196,34 @@ function moveSnakeForward() {
 
 
 function stopGame () {
+    gameStarted = false;
     clearInterval(movementInterval);
     clearInterval(turnInterval);
-    //setTimeout(resetGame, 3000);
     alert("ded");
 }
 
 function resetGame () {
+
+
+
     console.log("resetting game..");
     score = 0;
 
+    for (let i = 1; i < allSnakeBodyElements.length; i++) {
+        gameArea.removeChild(allSnakeBodyElements[i]);
+    }
 
+    allSnakeBodyElements.splice(1, allSnakeBodyElements.length - 1);
 
-    allSnakeBodyElements.forEach(element => {
-        gsap.to(element, {
-            x: 0,
-            y: 0,
-            opacity: 0,
-            duration: 1
-        });
-        element.setAttribute('data-direction', 'right')
-        rotateElement(element, 0);
+    gsap.to(allSnakeBodyElements[0], {
+        x: 0,
+        y: 0,
+        opacity: 0,
+        duration: 0
     });
-    document.removeEventListener('keydown', keyDownListener);
+    allSnakeBodyElements[0].setAttribute('data-direction', 'right')
+    rotateElement(allSnakeBodyElements[0], 0);
+
 }
 
 
@@ -253,6 +265,8 @@ function turnSnake (direction) {
 
 function startGame () {
 
+    gameStarted = true;
+
     startingSnakeElements = startingSnakeElementsInput.value;
 
     for (let i = 0; i < startingSnakeElements; i++) {
@@ -280,7 +294,6 @@ function startGame () {
     tickSpeed = document.querySelector(".tick-speed-input").value;
     console.log("starting game.. tick speed:", tickSpeed);
     movementInterval = setInterval(moveSnakeForward, tickSpeed * 1000);
-    document.addEventListener('keydown', keyDownListener);
     spawnFood();
 }
 
@@ -296,13 +309,9 @@ function spawnFood () {
         opacity: 1,
         duration: 0
     })
-
-
-    console.log(snakeFoodX, snakeFoodY);
-
-
 }
 
 
 
 startButton.addEventListener('click', startGame);
+document.addEventListener('keydown', keyDownListener);
