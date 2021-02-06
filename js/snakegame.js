@@ -1,8 +1,10 @@
 var snake = document.querySelector(".snake");
 
-var allSnakeBodyElements = document.querySelectorAll(".snake-body-element");
+var allSnakeBodyElements = Array.from(document.querySelectorAll(".snake-body-element"));
 
-var gameArea = document.querySelector(".play-area");
+var gameArea = document.querySelector(".game-area");
+
+var startingSnakeElementsInput = document.querySelector(".starting-snake-elements-input");
 
 var movementInterval;
 
@@ -19,6 +21,8 @@ var snakeFoodX;
 var snakeFoodY;
 
 var score = 0;
+
+var startingSnakeElements = 5;
 
 var keyDownListener = function(e) {
     if (e.code == "ArrowLeft") {
@@ -59,59 +63,121 @@ function rotateElement (element, degree) {
     })
 }
 
+function fullOpacity (element) {
+    gsap.to(element, {
+        opacity: 1,
+        duration: 0
+    });
+}
+
 
 
 function moveSnakeForward() {
 
 
-    let snakeHeadX = allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().left;
-    let snakeHeadY = allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.parentNode.getBoundingClientRect().top;
+    let snakeHeadX = allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left - 5
+    let snakeHeadY = allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left + 100
     let snakeHeadDirection = allSnakeBodyElements[0].getAttribute("data-direction");
 
     console.log(snakeHeadX, snakeHeadY);
 
-    if (snakeHeadX >= 480 && snakeHeadDirection == "right" || snakeHeadX <= 20 && snakeHeadDirection == "left" || snakeHeadY >= 480 && snakeHeadDirection == "down" || snakeHeadY <= 20 && snakeHeadDirection == "up") {
+    
+    if (snakeHeadX >= 480 && snakeHeadDirection == "right" || snakeHeadX <= 0 && snakeHeadDirection == "left" || snakeHeadY >= 480 && snakeHeadDirection == "down" || snakeHeadY <= 0 && snakeHeadDirection == "up") {
         stopGame();
+        resetGame();
         return;
     }
+    
 
-
-    if (((snakeHeadX - 5) == snakeFoodX) && ((snakeHeadY - 5) == snakeFoodY)) {
+    if ((snakeHeadX == snakeFoodX) && (snakeHeadY == snakeFoodY)) {
         score++;
         console.log("YUM! score:", score);
         spawnFood();
+
+        let snakeEndX = allSnakeBodyElements[allSnakeBodyElements.length-1].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left - 5;
+        let snakeEndY = allSnakeBodyElements[allSnakeBodyElements.length-1].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left + 100;
+        let snakeEndDirection = allSnakeBodyElements[allSnakeBodyElements.length-1].getAttribute("data-direction");
+        let newSnakeElement = document.createElement("div");
+        newSnakeElement.classList.add("snake-body-element");
+        newSnakeElement.setAttribute('data-direction', snakeEndDirection);
+        gameArea.appendChild(newSnakeElement);
+        allSnakeBodyElements.push(newSnakeElement);
+
+        //newSnakeElementX = newSnakeElement.getBoundingClientRect().left;
+        //newSnakeElementY = newSnakeElement.getBoundingClientRect().top;
+
+        
+        
+
+        switch (snakeEndDirection) {
+            case "left":
+                gsap.to(newSnakeElement, {
+                    x:  snakeEndX + 20,
+                    y:  snakeEndY,
+                    duration: 0
+                })
+                setTimeout(function () {
+                    fullOpacity(newSnakeElement);
+                }, tickSpeed * 1000);
+                break;
+            case "right":
+                gsap.to(newSnakeElement, {
+                    x:  snakeEndX - 20,
+                    y:  snakeEndY,
+                    duration: 0
+                })
+                setTimeout(function () {
+                    fullOpacity(newSnakeElement);
+                }, tickSpeed * 1000);
+                break;
+            case "up":
+                gsap.to(newSnakeElement, {
+                    x:  snakeEndX,
+                    y:  snakeEndY + 20,
+                    duration: 0
+                })
+                setTimeout(function () {
+                    fullOpacity(newSnakeElement);
+                }, tickSpeed * 1000);
+                break;
+            case "down":
+                gsap.to(newSnakeElement, {
+                    x:  snakeEndX,
+                    y:  snakeEndY - 20,
+                    duration: 0
+                })
+                setTimeout(function () {
+                    fullOpacity(newSnakeElement);
+                }, tickSpeed * 1000);
+                break;
+            default:
+                break;
+        }
     }
 
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
-
-
-
-
-
-
-
         switch (allSnakeBodyElements[i].getAttribute("data-direction")) {
             case "left":
-                gsap.to(allSnakeBodyElements[i], {
-                    y: "+=20",
-                    duration: tickSpeed
-                });
-                break;
-            case "right":
-                gsap.to(allSnakeBodyElements[i], {
-                    y: "-=20",
-                    duration: tickSpeed
-                });
-                break;
-            case "up":
                 gsap.to(allSnakeBodyElements[i], {
                     x: "-=20",
                     duration: tickSpeed
                 });
                 break;
-            case "down":
+            case "right":
                 gsap.to(allSnakeBodyElements[i], {
                     x: "+=20",
+                    duration: tickSpeed
+                });
+                break;
+            case "up":
+                gsap.to(allSnakeBodyElements[i], {
+                    y: "-=20",
+                    duration: tickSpeed
+                });
+                break;
+            case "down":
+                gsap.to(allSnakeBodyElements[i], {
+                    y: "+=20",
                     duration: tickSpeed
                 });
                 break;
@@ -125,15 +191,21 @@ function moveSnakeForward() {
 function stopGame () {
     clearInterval(movementInterval);
     clearInterval(turnInterval);
-    setTimeout(resetGame, 1000);
+    //setTimeout(resetGame, 3000);
+    alert("ded");
 }
 
 function resetGame () {
     console.log("resetting game..");
+    score = 0;
+
+
+
     allSnakeBodyElements.forEach(element => {
         gsap.to(element, {
             x: 0,
             y: 0,
+            opacity: 0,
             duration: 1
         });
         element.setAttribute('data-direction', 'right')
@@ -155,19 +227,19 @@ function turnSnake (direction) {
     
         switch (direction) {
             case "up":
-                rotateElement(allSnakeBodyElements[turnVar], 270);
+                rotateElement(allSnakeBodyElements[turnVar], 0);
                 allSnakeBodyElements[turnVar].setAttribute('data-direction', 'up');
                 break;
             case "left":
-                rotateElement(allSnakeBodyElements[turnVar], 180);
+                rotateElement(allSnakeBodyElements[turnVar], 270);
                 allSnakeBodyElements[turnVar].setAttribute('data-direction', 'left');
                 break;
             case "down":
-                rotateElement(allSnakeBodyElements[turnVar], 90);
+                rotateElement(allSnakeBodyElements[turnVar], 180);
                 allSnakeBodyElements[turnVar].setAttribute('data-direction', 'down');
                 break;
             case "right":
-                rotateElement(allSnakeBodyElements[turnVar], 0);
+                rotateElement(allSnakeBodyElements[turnVar], 90);
                 allSnakeBodyElements[turnVar].setAttribute('data-direction', 'right');
                 break;
             default:
@@ -180,6 +252,31 @@ function turnSnake (direction) {
 
 
 function startGame () {
+
+    startingSnakeElements = startingSnakeElementsInput.value;
+
+    for (let i = 0; i < startingSnakeElements; i++) {
+        let newSnakeElement = document.createElement("div");
+        newSnakeElement.classList.add("snake-body-element");
+        newSnakeElement.setAttribute('data-direction', 'right');
+        gameArea.appendChild(newSnakeElement);
+        allSnakeBodyElements.push(newSnakeElement);
+    }
+
+
+    for (let i = 0; i < allSnakeBodyElements.length; i++) {
+        gsap.to(allSnakeBodyElements[i], {
+            x: 250 + (startingSnakeElements * 20 / 2) - i * 20,
+            y: 240,
+            opacity: 1,
+            duration: 0
+        })
+        rotateElement(allSnakeBodyElements[i], 90);
+    }
+
+
+
+
     tickSpeed = document.querySelector(".tick-speed-input").value;
     console.log("starting game.. tick speed:", tickSpeed);
     movementInterval = setInterval(moveSnakeForward, tickSpeed * 1000);
@@ -196,6 +293,7 @@ function spawnFood () {
     gsap.to(snakeFood, {
         x: snakeFoodX,
         y: snakeFoodY,
+        opacity: 1,
         duration: 0
     })
 
@@ -208,5 +306,3 @@ function spawnFood () {
 
 
 startButton.addEventListener('click', startGame);
-
-

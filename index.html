@@ -11,19 +11,21 @@
     <h1 class="main-heading">SNAKE GAME (use arrow keys to change direction)</h1>
     <div class="game-area">
         <div class="snake-food"></div>
-        <div class="snake">
-            <div class="snake-body-element" data-direction="right">
-                <div class="snake-eye"></div>
-                <div class="snake-eye"></div>
-            </div>
-            <div class="snake-body-element" data-direction="right"></div>
-            <div class="snake-body-element" data-direction="right"></div>
-            <div class="snake-body-element" data-direction="right"></div>
+        <div class="snake-body-element" data-direction="right">
+            <div class="snake-eye"></div>
+            <div class="snake-eye"></div>
         </div>
+        <!--
+        <div class="snake-body-element" data-direction="right"></div>
+        <div class="snake-body-element" data-direction="right"></div>
+        <div class="snake-body-element" data-direction="right"></div>
+        -->
     </div>
     <div>
         <label>tick speed</label>
-        <input class="tick-speed-input" type="number" value="0.3" min="0.1" step="0.1">
+        <input class="tick-speed-input" type="number" value="0.2" min="0.05" max="2" step="0.05">
+        <label>starting snake elements</label>
+        <input class="starting-snake-elements-input" type="number" value="3" min="0" max="10" step="1">
     </div>
     <button class="start-button">START</button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
