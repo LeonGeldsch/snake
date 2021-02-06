@@ -22,34 +22,26 @@ var snakeFoodY;
 
 var score = 0;
 
-var startingSnakeElements = 5;
-
-var gameStarted = false;
+var startingSnakeElements = 3;
 
 var keyDownListener = function(e) {
-    console.log(e.code);
     if (e.code == "ArrowLeft") {
         console.log("left");
-        if (gameStarted) turnSnake("left");
+        turnSnake("left");
     }
     if (e.code == "ArrowRight") {
         console.log("right");
-        if (gameStarted) turnSnake("right");
+        turnSnake("right");
     }
     if (e.code == "ArrowUp") {
         console.log("up");
-        if (gameStarted) turnSnake("up");
+        turnSnake("up");
     }
     if (e.code == "ArrowDown") {
         console.log("down");
-        if (gameStarted) turnSnake("down");
-    }
-    if (e.code == "Enter") {
-        console.log("enter");
-        if (!gameStarted) startGame();
+        turnSnake("down");
     }
 };
-
 
 
 // give the percentage width of an element in pixel
@@ -80,6 +72,7 @@ function fullOpacity (element) {
 
 function moveSnakeForward() {
 
+    console.log("test");
 
     let snakeHeadX = allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left - 10;
     let snakeHeadY = allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.getBoundingClientRect().top - 10;
@@ -196,16 +189,13 @@ function moveSnakeForward() {
 
 
 function stopGame () {
-    gameStarted = false;
     clearInterval(movementInterval);
     clearInterval(turnInterval);
     alert("ded");
+    
 }
 
 function resetGame () {
-
-
-
     console.log("resetting game..");
     score = 0;
 
@@ -224,6 +214,7 @@ function resetGame () {
     allSnakeBodyElements[0].setAttribute('data-direction', 'right')
     rotateElement(allSnakeBodyElements[0], 0);
 
+    document.removeEventListener('keydown', keyDownListener);
 }
 
 
@@ -265,8 +256,6 @@ function turnSnake (direction) {
 
 function startGame () {
 
-    gameStarted = true;
-
     startingSnakeElements = startingSnakeElementsInput.value;
 
     for (let i = 0; i < startingSnakeElements; i++) {
@@ -294,6 +283,7 @@ function startGame () {
     tickSpeed = document.querySelector(".tick-speed-input").value;
     console.log("starting game.. tick speed:", tickSpeed);
     movementInterval = setInterval(moveSnakeForward, tickSpeed * 1000);
+    document.addEventListener('keydown', keyDownListener);
     spawnFood();
 }
 
@@ -314,4 +304,3 @@ function spawnFood () {
 
 
 startButton.addEventListener('click', startGame);
-document.addEventListener('keydown', keyDownListener);
