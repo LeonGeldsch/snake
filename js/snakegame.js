@@ -42,26 +42,66 @@ var inputArray = [];
 
 var movementEase = document.querySelector(".movement-ease-input").value;
 
+var turnIntervalPaused = false;
+
+var movementIntervalPaused = false;
+
 var keyDownListener = function(e) {
     if (e.code == "ArrowLeft") {
         console.log("left");
         inputArray.push("left");
-        //turnSnake("left");
+        /*
+        turnIntervalPaused = true;
+        movementIntervalPaused = true;
+        setTimeout(function () {
+            turnIntervalPaused = false;
+            movementIntervalPaused = false;
+        }), 1000;
+        moveSnakeForward();
+        turnSnake("left");
+        */
     }
     if (e.code == "ArrowRight") {
         console.log("right");
         inputArray.push("right");
-        //turnSnake("right");
+        /*
+        turnIntervalPaused = true;
+        movementIntervalPaused = true;
+        setTimeout(function () {
+            turnIntervalPaused = false;
+            movementIntervalPaused = false;
+        }), 1000;
+        moveSnakeForward();
+        turnSnake("right");
+        */
     }
     if (e.code == "ArrowUp") {
         console.log("up");
         inputArray.push("up");
-        //turnSnake("up");
+        /*
+        turnIntervalPaused = true;
+        movementIntervalPaused = true;
+        setTimeout(function () {
+            turnIntervalPaused = false;
+            movementIntervalPaused = false;
+        }), 1000;
+        moveSnakeForward();
+        turnSnake("up");
+        */
     }
     if (e.code == "ArrowDown") {
         console.log("down");
         inputArray.push("down");
-        //turnSnake("down");
+        /*
+        turnIntervalPaused = true;
+        movementIntervalPaused = true;
+        setTimeout(function () {
+            turnIntervalPaused = false;
+            movementIntervalPaused = false;
+        }), 1000;
+        moveSnakeForward();
+        turnSnake("down");
+        */
     }
 };
 
@@ -211,6 +251,10 @@ function checkForSnakeBodyCollision () {
 
 function moveSnakeForward() {
 
+    if (turnIntervalPaused) {
+        console.log("interval paused");
+        return;
+    }
 
     //for queueing up inputs
     let input = inputArray.shift();
@@ -221,7 +265,7 @@ function moveSnakeForward() {
     
 
     let snakeHeadX = allSnakeBodyElements[0].getAttribute("data-x");
-    let snakeHeadY = allSnakeBodyElements[0].getAttribute("data-y");;
+    let snakeHeadY = allSnakeBodyElements[0].getAttribute("data-y");
 
     /*
     let snakeHeadX = allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left - 10;
@@ -309,6 +353,10 @@ function resetGame () {
 
 
 function turnSnake (direction) {
+
+    if (turnIntervalPaused) {
+        return;
+    }
 
     let turnVar = 0;
 
@@ -493,6 +541,8 @@ startButton.addEventListener('click', startGame);
 
 mobileButtonUp.addEventListener('click', function() {
     turnSnake("up");
+    clearInterval(movementInterval);
+    movementInterval = setInterval(moveSnakeForward, tickSpeed * 1000);
 });
 mobileButtonDown.addEventListener('click', function() {
     turnSnake("down");
@@ -511,3 +561,7 @@ window.addEventListener('resize', function () {
     snakeHeadStartingX = gameAreaWidth / 2;
     snakeHeadStartingY = gameAreaHeight / 2;
 });
+
+startingSnakeElementsInput.addEventListener('click', function() {
+    console.log("test123");
+})
