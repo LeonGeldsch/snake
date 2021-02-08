@@ -7,6 +7,9 @@
 }
 
 .game-area {
+    display: grid;
+    grid-template-columns: repeat(25, 20px);
+    grid-template-rows: repeat(25, 20px);
     position: relative;
     margin: 0 auto;
     margin-top: 50px;

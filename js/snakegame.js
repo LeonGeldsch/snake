@@ -24,6 +24,10 @@ var score = 0;
 
 var startingSnakeElements = 3;
 
+var allPreviousX = [];
+
+var allPreviousY = [];
+
 var keyDownListener = function(e) {
     if (e.code == "ArrowLeft") {
         console.log("left");
@@ -72,7 +76,7 @@ function fullOpacity (element) {
 
 function moveSnakeForward() {
 
-    console.log("test");
+
 
     let snakeHeadX = allSnakeBodyElements[0].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left - 10;
     let snakeHeadY = allSnakeBodyElements[0].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.getBoundingClientRect().top - 10;
@@ -86,6 +90,14 @@ function moveSnakeForward() {
         resetGame();
         return;
     }
+
+
+
+
+    allSnakeBodyElements.forEach(element => {
+
+    });
+
     
 
     if ((snakeHeadX + 5 == snakeFoodX) && (snakeHeadY + 5 == snakeFoodY)) {
@@ -119,6 +131,8 @@ function moveSnakeForward() {
                 setTimeout(function () {
                     fullOpacity(newSnakeElement);
                 }, tickSpeed * 1000);
+                newSnakeElement.setAttribute('data-x', parseInt( allSnakeBodyElements[allSnakeBodyElements.length-2].getAttribute("data-x")) + 1 );
+                newSnakeElement.setAttribute('data-y', parseInt( allSnakeBodyElements[allSnakeBodyElements.length-2].getAttribute("data-y")) );
                 break;
             case "right":
                 gsap.to(newSnakeElement, {
@@ -129,6 +143,8 @@ function moveSnakeForward() {
                 setTimeout(function () {
                     fullOpacity(newSnakeElement);
                 }, tickSpeed * 1000);
+                newSnakeElement.setAttribute('data-x', parseInt( allSnakeBodyElements[allSnakeBodyElements.length-2].getAttribute("data-x")) - 1 );
+                newSnakeElement.setAttribute('data-y', parseInt( allSnakeBodyElements[allSnakeBodyElements.length-2].getAttribute("data-y")) );
                 break;
             case "up":
                 gsap.to(newSnakeElement, {
@@ -139,6 +155,8 @@ function moveSnakeForward() {
                 setTimeout(function () {
                     fullOpacity(newSnakeElement);
                 }, tickSpeed * 1000);
+                newSnakeElement.setAttribute('data-x', parseInt( allSnakeBodyElements[allSnakeBodyElements.length-2].getAttribute("data-x")) );
+                newSnakeElement.setAttribute('data-y', parseInt( allSnakeBodyElements[allSnakeBodyElements.length-2].getAttribute("data-y")) + 1 );
                 break;
             case "down":
                 gsap.to(newSnakeElement, {
@@ -149,11 +167,15 @@ function moveSnakeForward() {
                 setTimeout(function () {
                     fullOpacity(newSnakeElement);
                 }, tickSpeed * 1000);
+                newSnakeElement.setAttribute('data-x', parseInt( allSnakeBodyElements[allSnakeBodyElements.length-2].getAttribute("data-x")) );
+                newSnakeElement.setAttribute('data-y', parseInt( allSnakeBodyElements[allSnakeBodyElements.length-2].getAttribute("data-y")) - 1 );
                 break;
             default:
                 break;
         }
     }
+
+    //console.log("test:", parseInt(allSnakeBodyElements[allSnakeBodyElements.length - 1].getAttribute("data-y")) - 1);
 
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
         switch (allSnakeBodyElements[i].getAttribute("data-direction")) {
@@ -162,29 +184,50 @@ function moveSnakeForward() {
                     x: "-=20",
                     duration: tickSpeed
                 });
+                allSnakeBodyElements[i].setAttribute("data-x", parseInt(allSnakeBodyElements[i].getAttribute("data-x")) - 1);
                 break;
             case "right":
                 gsap.to(allSnakeBodyElements[i], {
                     x: "+=20",
                     duration: tickSpeed
                 });
+                allSnakeBodyElements[i].setAttribute("data-x", parseInt(allSnakeBodyElements[i].getAttribute("data-x")) + 1);
                 break;
             case "up":
                 gsap.to(allSnakeBodyElements[i], {
                     y: "-=20",
                     duration: tickSpeed
                 });
+                allSnakeBodyElements[i].setAttribute("data-y", parseInt(allSnakeBodyElements[i].getAttribute("data-y")) - 1);
                 break;
             case "down":
                 gsap.to(allSnakeBodyElements[i], {
                     y: "+=20",
                     duration: tickSpeed
                 });
+                allSnakeBodyElements[i].setAttribute("data-y", parseInt(allSnakeBodyElements[i].getAttribute("data-y")) + 1);
                 break;
             default:
                 break;
         }
     }
+
+
+    allPreviousX = [];
+    allPreviousY = [];
+    for (let i = 1; i < allSnakeBodyElements.length; i++) {
+        allPreviousX.push(parseInt(allSnakeBodyElements[i].getAttribute("data-x")));
+        allPreviousY.push(parseInt(allSnakeBodyElements[i].getAttribute("data-y")));
+    }
+
+    for (let i = 0; i < allSnakeBodyElements.length; i++) {
+        if (allSnakeBodyElements[0].getAttribute("data-x") == allPreviousX[i] && allSnakeBodyElements[0].getAttribute("data-y") == allPreviousY[i]) {
+            stopGame();
+            resetGame();
+            return;
+        }
+    }
+
 }
 
 
@@ -259,14 +302,17 @@ function startGame () {
 
     startingSnakeElements = startingSnakeElementsInput.value;
 
+
     for (let i = 0; i < startingSnakeElements; i++) {
+        let newSnakeElementPosition = Math.floor(25 / 2 + startingSnakeElements - i + 1);
         let newSnakeElement = document.createElement("div");
         newSnakeElement.classList.add("snake-body-element");
         newSnakeElement.setAttribute('data-direction', 'right');
+        newSnakeElement.setAttribute('data-x', newSnakeElementPosition);
+        newSnakeElement.setAttribute('data-y', '12');
         gameArea.appendChild(newSnakeElement);
         allSnakeBodyElements.push(newSnakeElement);
     }
-
 
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
         gsap.to(allSnakeBodyElements[i], {
@@ -294,6 +340,9 @@ function startGame () {
 function spawnFood () {
     snakeFoodX = Math.floor(Math.random() * 25) * 20;
     snakeFoodY = Math.floor(Math.random() * 25) * 20;
+
+    snakeFood.setAttribute('data-x', snakeFoodX / 20);
+    snakeFood.setAttribute('data-y', snakeFoodY / 20);
 
     gsap.to(snakeFood, {
         x: snakeFoodX,
