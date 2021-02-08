@@ -481,3 +481,15 @@ mobileButtonLeft.addEventListener('click', function() {
 mobileButtonRight.addEventListener('click', function() {
     turnSnake("right");
 });
+
+window.addEventListener('resize', function () {
+    gameAreaPixelSize = parseInt(getComputedStyle(allSnakeBodyElements[0]).getPropertyValue('width'));
+
+    gameAreaWidth = parseInt(getComputedStyle(gameArea).getPropertyValue('width')) / gameAreaPixelSize;
+    
+    gameAreaHeight = parseInt(getComputedStyle(gameArea).getPropertyValue('height')) / gameAreaPixelSize;
+    
+    snakeHeadStartingX = gameAreaWidth / 2;
+    
+    snakeHeadStartingY = gameAreaHeight / 2;
+});
