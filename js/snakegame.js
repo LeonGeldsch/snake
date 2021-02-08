@@ -1,5 +1,3 @@
-//var snake = document.querySelector(".snake");
-
 var allSnakeBodyElements = Array.from(document.querySelectorAll(".snake-body-element"));
 
 var gameArea = document.querySelector(".game-area");
@@ -40,28 +38,36 @@ var snakeHeadStartingY = gameAreaHeight / 2;
 
 var snakeHeadStartingDirection = "right";
 
+var inputArray = [];
+
 var keyDownListener = function(e) {
     if (e.code == "ArrowLeft") {
         console.log("left");
-        turnSnake("left");
+        inputArray.push("left");
+        //turnSnake("left");
     }
     if (e.code == "ArrowRight") {
         console.log("right");
-        turnSnake("right");
+        inputArray.push("right");
+        //turnSnake("right");
     }
     if (e.code == "ArrowUp") {
         console.log("up");
-        turnSnake("up");
+        inputArray.push("up");
+        //turnSnake("up");
     }
     if (e.code == "ArrowDown") {
         console.log("down");
-        turnSnake("down");
+        inputArray.push("down");
+        //turnSnake("down");
     }
 };
+
 
 /*
  * ---------------------------------------- FUNCTIONS ---------------------------------------
  */
+
 
 // give the percentage width of an element in pixel
 function percentWidthToPixel(_elem, _perc){
@@ -202,6 +208,15 @@ function checkForSnakeBodyCollision () {
 
 
 function moveSnakeForward() {
+
+
+    //for queueing up inputs
+    let input = inputArray.shift();
+    if (input) {
+        turnSnake(input);
+    }
+
+    
 
     let snakeHeadX = allSnakeBodyElements[0].getAttribute("data-x");
     let snakeHeadY = allSnakeBodyElements[0].getAttribute("data-y");;
@@ -484,12 +499,8 @@ mobileButtonRight.addEventListener('click', function() {
 
 window.addEventListener('resize', function () {
     gameAreaPixelSize = parseInt(getComputedStyle(allSnakeBodyElements[0]).getPropertyValue('width'));
-
     gameAreaWidth = parseInt(getComputedStyle(gameArea).getPropertyValue('width')) / gameAreaPixelSize;
-    
     gameAreaHeight = parseInt(getComputedStyle(gameArea).getPropertyValue('height')) / gameAreaPixelSize;
-    
     snakeHeadStartingX = gameAreaWidth / 2;
-    
     snakeHeadStartingY = gameAreaHeight / 2;
 });
