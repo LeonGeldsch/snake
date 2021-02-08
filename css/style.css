@@ -1,3 +1,7 @@
+h1 {
+    font-size: 40px;
+}
+
 .flex {
     display: flex;
 }
@@ -11,10 +15,9 @@
     grid-template-columns: repeat(25, 20px);
     grid-template-rows: repeat(25, 20px);
     position: relative;
-    margin: 0 auto;
+    margin: 40px auto;
     margin-top: 50px;
     margin-bottom: 50px;
-    margin-left: 193px;
     background-color: rgb(248, 217, 79);
     width: 500px;
     height: 500px;
@@ -43,6 +46,10 @@
     width: 20px;
     height: 20px;
     border-radius: 10px;
+    /*
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    */
     background-color: red;
     opacity: 0;
 }
@@ -65,3 +72,109 @@
     border-radius: 50%;
     opacity: 0;
 }
+
+.start-button {
+    margin: 10px auto;
+    height: 40px;
+    width: 70px;
+}
+
+
+
+
+
+
+/*
+ * -------------------- MOBILE CONTROLS ----------------------
+ */
+
+.mobile-controls {
+    display: none;
+}
+
+.mobile-control-button {
+    display: none;
+}
+
+
+
+/*
+ * --------------------  ----------------------
+ */
+
+ 
+ 
+ 
+ @media (max-width: 600px) {
+     
+         .game-area {
+        }
+        
+        .main-heading {
+            display: none;
+        }
+        
+        .tick-speed-input {
+            display: none;
+    }
+    
+    .starting-snake-elements-input {
+        display: none;
+    }
+    
+    label {
+        display: none;
+    }
+    
+    .start-button {
+    }
+    
+    .wrapper {
+        text-align: center;
+        margin: 0 0;
+    }
+    
+    .mobile-controls button:first-child {
+        margin: 0 70px;
+    }
+    
+    .mobile-controls {
+        width: 210px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    
+    .mobile-control-button {
+        display: block;
+        width: 70px;
+        height: 70px;
+        border-radius: 5px;
+    }
+}
+
+/*
+@media (max-width: 550px) {
+    .game-area {
+        width: 400px;
+        height: 400px;
+    }
+}
+*/
+
+@media (max-width: 400px) {
+    .game-area {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+/*
+@media (max-width: 300px) {
+    .game-area {
+        width: 200px;
+        height: 200px;
+    }
+}
+*/
