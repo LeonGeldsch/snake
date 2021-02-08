@@ -40,6 +40,8 @@ var snakeHeadStartingDirection = "right";
 
 var inputArray = [];
 
+var movementEase = document.querySelector(".movement-ease-input").value;
+
 var keyDownListener = function(e) {
     if (e.code == "ArrowLeft") {
         console.log("left");
@@ -236,6 +238,7 @@ function moveSnakeForward() {
             case "left":
                 gsap.to(allSnakeBodyElements[i], {
                     x: "-=20",
+                    ease: movementEase,
                     duration: tickSpeed
                 });
                 allSnakeBodyElements[i].setAttribute("data-x", parseInt(allSnakeBodyElements[i].getAttribute("data-x")) - 1);
@@ -243,6 +246,7 @@ function moveSnakeForward() {
             case "right":
                 gsap.to(allSnakeBodyElements[i], {
                     x: "+=20",
+                    ease: movementEase,
                     duration: tickSpeed
                 });
                 allSnakeBodyElements[i].setAttribute("data-x", parseInt(allSnakeBodyElements[i].getAttribute("data-x")) + 1);
@@ -250,6 +254,7 @@ function moveSnakeForward() {
             case "up":
                 gsap.to(allSnakeBodyElements[i], {
                     y: "-=20",
+                    ease: movementEase,
                     duration: tickSpeed
                 });
                 allSnakeBodyElements[i].setAttribute("data-y", parseInt(allSnakeBodyElements[i].getAttribute("data-y")) - 1);
@@ -257,6 +262,7 @@ function moveSnakeForward() {
             case "down":
                 gsap.to(allSnakeBodyElements[i], {
                     y: "+=20",
+                    ease: movementEase,
                     duration: tickSpeed
                 });
                 allSnakeBodyElements[i].setAttribute("data-y", parseInt(allSnakeBodyElements[i].getAttribute("data-y")) + 1);
@@ -393,6 +399,7 @@ function startGame () {
 
     startingSnakeElements = startingSnakeElementsInput.value;
     tickSpeed = document.querySelector(".tick-speed-input").value;
+    movementEase = document.querySelector(".movement-ease-input").value;
 
     /*
     allSnakeBodyElements[0].setAttribute('data-x', snakeHeadStartingX);
@@ -453,7 +460,7 @@ function startGame () {
     */
 
     startButton.removeEventListener('click', startGame);
-    console.log("starting game.. tick speed:", tickSpeed);
+    console.log("starting game.. tick speed:", tickSpeed, "; movement ease:", movementEase);
     movementInterval = setInterval(moveSnakeForward, tickSpeed * 1000);
     document.addEventListener('keydown', keyDownListener);
     spawnFood();
