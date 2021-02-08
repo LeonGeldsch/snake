@@ -399,8 +399,8 @@ function moveElementToLocation (element, elementNewX, elementNewY, direction, op
         duration: duration
     });
     element.setAttribute('data-direction', direction);
-    element.setAttribute('data-x', elementNewX / gameAreaPixelSize);
-    element.setAttribute('data-y', elementNewY / gameAreaPixelSize);
+    element.setAttribute('data-x', Math.floor(elementNewX / gameAreaPixelSize));
+    element.setAttribute('data-y', Math.floor(elementNewY / gameAreaPixelSize));
     switch (direction) {
         case "up":
             rotateElement(element, 0);
@@ -522,6 +522,12 @@ function spawnFood () {
 
     snakeFood.setAttribute('data-x', snakeFoodX / 20);
     snakeFood.setAttribute('data-y', snakeFoodY / 20);
+
+    for (let i = 0; i < allSnakeBodyElements.length; i++) {
+        if (snakeFoodX == allSnakeBodyElements[i].getAttribute("data-x") && snakeFoodY == allSnakeBodyElements[i].getAttribute("data-y")) {
+            spawnFood();
+        }        
+    }
 
     gsap.to(snakeFood, {
         x: snakeFoodX,
