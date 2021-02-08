@@ -91,13 +91,6 @@ function moveSnakeForward() {
         return;
     }
 
-
-
-
-    allSnakeBodyElements.forEach(element => {
-
-    });
-
     
 
     if ((snakeHeadX + 5 == snakeFoodX) && (snakeHeadY + 5 == snakeFoodY)) {
@@ -254,7 +247,9 @@ function resetGame () {
         opacity: 0,
         duration: 0
     });
-    allSnakeBodyElements[0].setAttribute('data-direction', 'right')
+    allSnakeBodyElements[0].setAttribute('data-direction', 'right');
+    allSnakeBodyElements[0].setAttribute('data-x', 0);
+    allSnakeBodyElements[0].setAttribute('data-y', 0);
     rotateElement(allSnakeBodyElements[0], 0);
 
     document.removeEventListener('keydown', keyDownListener);
@@ -313,6 +308,10 @@ function startGame () {
         gameArea.appendChild(newSnakeElement);
         allSnakeBodyElements.push(newSnakeElement);
     }
+
+    allSnakeBodyElements[0].setAttribute('data-x', '14');
+    allSnakeBodyElements[0].setAttribute('data-y', '12');
+
 
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
         gsap.to(allSnakeBodyElements[i], {
