@@ -163,7 +163,7 @@ h1 {
 }
 */
 
-@media (max-width: 400px) {
+@media (max-width: 510px) {
     .game-area {
         width: 300px;
         height: 300px;
