@@ -1,3 +1,5 @@
+var body = document.querySelector("body");
+
 var badgeWrapper = document.querySelector(".badge_wrapper");
 
 var badge = document.querySelector(".badge_wrapper img");
@@ -26,4 +28,15 @@ window.addEventListener('scroll', function() {
 
 menuGradientLight.addEventListener("click", function() {
     menuWrapper.click();
+});
+
+
+//<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+
+body.appendChild('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>');
+
+gsap.to(badgeWrapper, {
+    x: -200,
+    y:-200,
+    duration: 1
 });
