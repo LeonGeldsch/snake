@@ -18,7 +18,7 @@ var burgerUpper = document.querySelector(".burger.upper");
 
 var burgerLower = document.querySelector(".burger.lower");
 
-var allATags = document.querySelectorAll("a");
+var allATags = document.querySelectorAll(".object-wrapper .lab-wrapper");
 
 (function () {
 
