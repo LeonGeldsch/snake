@@ -70,7 +70,7 @@ menuGradientLight.addEventListener("click", function() {
 $.getScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js', function() {
     console.log("loaded gsap");
     allATags.forEach(aTag => {
-        aTag.addEventListener('hover', function () {
+        aTag.addEventListener('mouseover', function () {
             console.log('hover');
             gsap.to(aTag, {
                 scale: 1.2,
