@@ -51,6 +51,11 @@ var burgerLower = document.querySelector(".burger.lower");
 
     loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js", function () {
         console.log('gsap loaded');
+        gsap.to(badgeWrapper, {
+            x: -200,
+            y:-200,
+            duration: 1
+        });        
     });
 
 
@@ -77,8 +82,3 @@ $.getScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js', fun
 });
 */
 
-gsap.to(badgeWrapper, {
-    x: -200,
-    y:-200,
-    duration: 1
-});
