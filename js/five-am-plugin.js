@@ -10,6 +10,8 @@ var popUpMenu = document.querySelector(".pop-up-menu");
 
 var menuLinks = document.querySelector(".menu_links");
 
+var menuWrapper = document.querySelector(".menu-wrapper");
+
 var burgerUpper = document.querySelector(".burger.upper");
 
 var burgerLower = document.querySelector(".burger.lower");
@@ -24,14 +26,11 @@ window.addEventListener('scroll', function() {
 
 menuGradientLight.addEventListener("click", function() {
     console.log('click');
-    popUpMenu.style.opacity = 0;
 
-
-    burgerUpper.style.transform = "translate3d(0px, 0px, 0px)";
-    burgerUpper.style.transform = "translate3d(0px, 0px, 0px)";
-    burgerLower.style.transform = "translate3d(0px, 0px, 0px)";
-    burgerLower.style.transform = "translate3d(0px, 0px, 0px)";
+    menuWrapper.click();
+    //eventFire(menuWrapper, 'click');
 })
+
 
 
 /*
@@ -40,3 +39,14 @@ transform: translate3d(0px, 0px, 0px)
 scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg); 
 transform-style: preserve-3d;
 */
+
+
+function eventFire(el, etype){
+    if (el.fireEvent) {
+        el.fireEvent('on' + etype);
+    } else {
+        var evObj = document.createEvent('Events');
+        evObj.initEvent(etype, true, false);
+        el.dispatchEvent(evObj);
+    }
+}
