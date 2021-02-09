@@ -1,3 +1,5 @@
 var badgeWrapper = document.querySelector(".badge_wrapper");
 
-console.log(badgeWrapper);
+var sectionGrey = document.querySelector(".section .grey");
+
+console.log(badgeWrapper, sectionGrey);
