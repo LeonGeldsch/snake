@@ -18,6 +18,40 @@ var burgerUpper = document.querySelector(".burger.upper");
 
 var burgerLower = document.querySelector(".burger.lower");
 
+(function () {
+
+    function loadScript(url, callback) {
+
+        var script = document.createElement("script")
+        script.type = "text/javascript";
+
+        if (script.readyState) { //IE
+            script.onreadystatechange = function () {
+                if (script.readyState == "loaded" || script.readyState == "complete") {
+                    script.onreadystatechange = null;
+                    callback();
+                }
+            };
+        } else { //Others
+            script.onload = function () {
+                callback();
+            };
+        }
+
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
+    }
+
+    loadScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", function () {
+
+         //jQuery loaded
+         console.log('jquery loaded');
+
+    });
+
+
+})();
+
 window.addEventListener('scroll', function() {
     if (parseInt(badgeWrapper.getBoundingClientRect().top) >= parseInt(sectionGrey.getBoundingClientRect().top) && parseInt(badgeWrapper.getBoundingClientRect().top) <= parseInt(sectionGrey.getBoundingClientRect().top) + parseInt(sectionGrey.offsetHeight)) {
         badge.style.filter = "invert()";
@@ -34,11 +68,8 @@ menuGradientLight.addEventListener("click", function() {
 //<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
 
 var gsapScript = document.createElement("script");
-
 gsapScript.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js");
-
 body.appendChild(gsapScript);
-
 
 
 gsap.to(badgeWrapper, {
