@@ -25,28 +25,5 @@ window.addEventListener('scroll', function() {
 });
 
 menuGradientLight.addEventListener("click", function() {
-    console.log('click');
-
     menuWrapper.click();
-    //eventFire(menuWrapper, 'click');
-})
-
-
-
-/*
-height: 2px; 
-transform: translate3d(0px, 0px, 0px) 
-scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg); 
-transform-style: preserve-3d;
-*/
-
-
-function eventFire(el, etype){
-    if (el.fireEvent) {
-        el.fireEvent('on' + etype);
-    } else {
-        var evObj = document.createEvent('Events');
-        evObj.initEvent(etype, true, false);
-        el.dispatchEvent(evObj);
-    }
-}
+});
