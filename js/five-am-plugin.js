@@ -4,7 +4,7 @@ var badge = document.querySelector(".badge_wrapper img");
 
 var sectionGrey = document.querySelector(".section.grey");
 
-var menuGradientLight = document.querySelector(".menu_gradient light");
+var menuGradientLight = document.querySelector(".menu_gradient.light");
 
 var popUpMenu = document.querySelector(".pop-up-menu");
 
@@ -19,5 +19,6 @@ window.addEventListener('scroll', function() {
 });
 
 menuGradientLight.addEventListener("click", function() {
+    console.log('click');
     popUpMenu.style.opacity = 0;
 })
