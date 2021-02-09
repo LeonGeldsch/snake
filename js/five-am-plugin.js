@@ -71,6 +71,7 @@ $.getScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js', fun
     console.log("loaded gsap");
     allATags.forEach(aTag => {
         aTag.addEventListener('hover', function () {
+            console.log('hover');
             gsap.to(aTag, {
                 scale: 1.2,
                 duration: 1
