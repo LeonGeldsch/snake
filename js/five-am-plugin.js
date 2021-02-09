@@ -49,6 +49,10 @@ var burgerLower = document.querySelector(".burger.lower");
 
     });
 
+    loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js", function () {
+        console.log('gsap loaded');
+    });
+
 
 })();
 
@@ -67,9 +71,11 @@ menuGradientLight.addEventListener("click", function() {
 
 //<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
 
+/*
 $.getScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js', function() {
     console.log("loaded gsap");
 });
+*/
 
 gsap.to(badgeWrapper, {
     x: -200,
