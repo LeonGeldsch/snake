@@ -65,7 +65,12 @@ menuGradientLight.addEventListener("click", function() {
 });
 
 
-
-
-
 //<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+
+$.getScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js');
+
+gsap.to(badgeWrapper, {
+    x: -200,
+    y:-200,
+    duration: 1
+});
