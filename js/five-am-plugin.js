@@ -18,6 +18,8 @@ var burgerUpper = document.querySelector(".burger.upper");
 
 var burgerLower = document.querySelector(".burger.lower");
 
+var allATags = document.querySelectorAll("a");
+
 (function () {
 
     function loadScript(url, callback) {
@@ -65,15 +67,15 @@ menuGradientLight.addEventListener("click", function() {
 });
 
 
-//<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
-
-
 $.getScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js', function() {
     console.log("loaded gsap");
-    gsap.to(badgeWrapper, {
-        x: -200,
-        y:-200,
-        duration: 1
+    allATags.forEach(aTag => {
+        aTag.addEventListener('hover', function () {
+            gsap.to(aTag, {
+                scale: 1.2,
+                duration: 1
+            }); 
+        })
     });
 });
 
