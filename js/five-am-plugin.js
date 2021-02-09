@@ -9,6 +9,6 @@ console.log(badge);
 window.addEventListener('scroll', function() {
     //console.log(badgeWrapper.getBoundingClientRect().top, sectionGrey.getBoundingClientRect().top);
     if (parseInt(badgeWrapper.getBoundingClientRect().top) >= parseInt(sectionGrey.getBoundingClientRect().top)) {
-        badgeWrapper.firstChild().style.filter = "invert()";
+        badge.style.filter = "invert()";
     }
 });
