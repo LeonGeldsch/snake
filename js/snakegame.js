@@ -26,13 +26,15 @@ var mobileButtonLeft = document.querySelector("#mobile-left-button");
 
 var mobileButtonRight = document.querySelector("#mobile-right-button");
 
-var gameAreaPixelSize = parseInt(getComputedStyle(allSnakeBodyElements[0]).getPropertyValue('width'));
+var gameAreaPixelSize = parseFloat(getComputedStyle(allSnakeBodyElements[0]).getPropertyValue('width'));
 
-var gameAreaWidth = parseInt(getComputedStyle(gameArea).getPropertyValue('width')) / gameAreaPixelSize;
+var gameAreaWidth = parseFloat(getComputedStyle(gameArea).getPropertyValue('width')) / gameAreaPixelSize;
 
-var gameAreaHeight = parseInt(getComputedStyle(gameArea).getPropertyValue('height')) / gameAreaPixelSize;
+var gameAreaHeight = parseFloat(getComputedStyle(gameArea).getPropertyValue('height')) / gameAreaPixelSize;
 
 var snakeHeadStartingX = gameAreaWidth / 2;
+
+console.log(gameAreaPixelSize, gameAreaWidth, gameAreaHeight);
 
 var snakeHeadStartingY = gameAreaHeight / 2;
 
@@ -281,7 +283,7 @@ function moveSnakeForward() {
         switch (allSnakeBodyElements[i].getAttribute("data-direction")) {
             case "left":
                 gsap.to(allSnakeBodyElements[i], {
-                    x: "-=20",
+                    x: "-=" + gameAreaPixelSize,
                     ease: movementEase,
                     duration: tickSpeed
                 });
@@ -289,7 +291,7 @@ function moveSnakeForward() {
                 break;
             case "right":
                 gsap.to(allSnakeBodyElements[i], {
-                    x: "+=20",
+                    x: "+=" + gameAreaPixelSize,
                     ease: movementEase,
                     duration: tickSpeed
                 });
@@ -297,7 +299,7 @@ function moveSnakeForward() {
                 break;
             case "up":
                 gsap.to(allSnakeBodyElements[i], {
-                    y: "-=20",
+                    y: "-=" + gameAreaPixelSize,
                     ease: movementEase,
                     duration: tickSpeed
                 });
@@ -305,7 +307,7 @@ function moveSnakeForward() {
                 break;
             case "down":
                 gsap.to(allSnakeBodyElements[i], {
-                    y: "+=20",
+                    y: "+=" + gameAreaPixelSize,
                     ease: movementEase,
                     duration: tickSpeed
                 });
@@ -354,14 +356,64 @@ function resetGame () {
 
 function turnSnake (direction) {
 
+    /*
     if (turnIntervalPaused) {
         return;
     }
+    */
 
-    let turnVar = 0;
+    let turnVar = 2;
+
+    switch (direction) {
+        case "up":
+            rotateElement(allSnakeBodyElements[0], 0);
+            allSnakeBodyElements[0].setAttribute('data-direction', 'up');
+            break;
+        case "left":
+            rotateElement(allSnakeBodyElements[0], 270);
+            allSnakeBodyElements[0].setAttribute('data-direction', 'left');
+            break;
+        case "down":
+            rotateElement(allSnakeBodyElements[0], 180);
+            allSnakeBodyElements[0].setAttribute('data-direction', 'down');
+            break;
+        case "right":
+            rotateElement(allSnakeBodyElements[0], 90);
+            allSnakeBodyElements[0].setAttribute('data-direction', 'right');
+            break;
+        default:
+            break;
+    }
+
+    setTimeout(function() {
+        if (allSnakeBodyElements[1]) {
+            switch (direction) {
+                case "up":
+                    rotateElement(allSnakeBodyElements[1], 0);
+                    allSnakeBodyElements[1].setAttribute('data-direction', 'up');
+                    break;
+                case "left":
+                    rotateElement(allSnakeBodyElements[1], 270);
+                    allSnakeBodyElements[1].setAttribute('data-direction', 'left');
+                    break;
+                case "down":
+                    rotateElement(allSnakeBodyElements[1], 180);
+                    allSnakeBodyElements[1].setAttribute('data-direction', 'down');
+                    break;
+                case "right":
+                    rotateElement(allSnakeBodyElements[1], 90);
+                    allSnakeBodyElements[1].setAttribute('data-direction', 'right');
+                    break;
+                default:
+                    break;
+            }        
+        }
+    }, tickSpeed * 500);
 
     var turnInterval = setInterval(function() {
+        console.log(turnVar);
         if (turnVar >= allSnakeBodyElements.length) {
+            console.log("clearing turn interval..");
             clearInterval(turnInterval);
             return;
         }
@@ -457,7 +509,6 @@ function startGame () {
 
     moveElementToLocation(allSnakeBodyElements[0], snakeHeadStartingX * gameAreaPixelSize, snakeHeadStartingY * gameAreaPixelSize, snakeHeadStartingDirection);
 
-
     for (let i = 0; i < startingSnakeElements; i++) {
         /*
         let newSnakeElement = document.createElement("div");
@@ -520,8 +571,8 @@ function spawnFood () {
     let snakeFoodX = Math.floor(Math.random() * gameAreaWidth) * gameAreaPixelSize;
     let snakeFoodY = Math.floor(Math.random() * gameAreaHeight) * gameAreaPixelSize;
 
-    snakeFood.setAttribute('data-x', snakeFoodX / 20);
-    snakeFood.setAttribute('data-y', snakeFoodY / 20);
+    snakeFood.setAttribute('data-x', snakeFoodX / gameAreaPixelSize);
+    snakeFood.setAttribute('data-y', snakeFoodY / gameAreaPixelSize);
 
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
         if (snakeFoodX == allSnakeBodyElements[i].getAttribute("data-x") && snakeFoodY == allSnakeBodyElements[i].getAttribute("data-y")) {
@@ -546,18 +597,20 @@ function spawnFood () {
 startButton.addEventListener('click', startGame);
 
 mobileButtonUp.addEventListener('click', function() {
-    turnSnake("up");
-    clearInterval(movementInterval);
-    movementInterval = setInterval(moveSnakeForward, tickSpeed * 1000);
+    //turnSnake("up");
+    inputArray.push("up");
 });
 mobileButtonDown.addEventListener('click', function() {
-    turnSnake("down");
+    //turnSnake("down");
+    inputArray.push("down");
 });
 mobileButtonLeft.addEventListener('click', function() {
-    turnSnake("left");
+    //turnSnake("left");
+    inputArray.push("left");
 });
 mobileButtonRight.addEventListener('click', function() {
-    turnSnake("right");
+    //turnSnake("right");
+    inputArray.push("right");
 });
 
 window.addEventListener('resize', function () {
@@ -571,3 +624,5 @@ window.addEventListener('resize', function () {
 startingSnakeElementsInput.addEventListener('click', function() {
     console.log("test123");
 })
+
+
