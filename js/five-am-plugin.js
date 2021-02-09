@@ -73,13 +73,15 @@ $.getScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js', fun
         aTag.addEventListener('mouseover', function () {
             gsap.to(aTag, {
                 scale: 1.2,
-                duration: 1
+                duration: 1,
+                ease: linear
             }); 
         })
         aTag.addEventListener('mouseleave', function () {
             gsap.to(aTag, {
                 scale: 1,
-                duration: 1
+                duration: 1,
+                ease: linear
             }); 
         })
     });
