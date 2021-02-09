@@ -72,7 +72,7 @@ $.getScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js', fun
     allATags.forEach(aTag => {
         aTag.addEventListener('mouseover', function () {
             gsap.to(aTag, {
-                scale: 1.2,
+                scale: 1.15,
                 duration: 1,
                 ease: linear
             }); 
