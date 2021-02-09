@@ -22,7 +22,7 @@
             <label>tick speed</label>
             <input class="tick-speed-input" type="number" value="0.2" min="0.05" max="2" step="0.05">
             <label>starting snake elements</label>
-            <input class="starting-snake-elements-input" type="number" value="3" min="0" max="10" step="1" disabled="true">
+            <input class="starting-snake-elements-input" type="number" value="3" min="0" max="10" step="1">
             <label>movement ease</label>
             <select class="movement-ease-input">
                 <option value="power1">power1</option>
@@ -40,6 +40,13 @@
                 <option value="expo">expo</option>
                 <option value="sine">sine</option>
             </select>
+            <br>
+            <label>wall collision</label>
+            <input type="checkbox" name="wall-collision" checked="true" class="wall-collision-input">
+            <label>body collision</label>
+            <input type="checkbox" name="body-collision" checked="true" class="body-collision-input">
+            <label>food collision</label>
+            <input type="checkbox" name="food-collision" checked="true" class="food-collision-input">
         </div>
         <button class="start-button">START</button>
         <div class="mobile-controls">

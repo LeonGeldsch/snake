@@ -44,9 +44,9 @@ var inputArray = [];
 
 var movementEase = document.querySelector(".movement-ease-input").value;
 
-var turnIntervalPaused = false;
-
-var movementIntervalPaused = false;
+var wallCollisionOn = document.querySelector(".wall-collision-input").checked;
+var bodyCollisionOn = document.querySelector(".body-collision-input").checked;
+var foodCollisionOn = document.querySelector(".food-collision-input").checked;
 
 var keyDownListener = function(e) {
     if (e.code == "ArrowLeft") {
@@ -253,10 +253,12 @@ function checkForSnakeBodyCollision () {
 
 function moveSnakeForward() {
 
+    /*
     if (turnIntervalPaused) {
         console.log("interval paused");
         return;
     }
+    */
 
     //for queueing up inputs
     let input = inputArray.shift();
@@ -275,9 +277,9 @@ function moveSnakeForward() {
     */
     let snakeHeadDirection = allSnakeBodyElements[0].getAttribute("data-direction");
 
+    if (wallCollisionOn) checkForWallCollision(snakeHeadX, snakeHeadY, snakeHeadDirection);
 
-    checkForWallCollision(snakeHeadX, snakeHeadY, snakeHeadDirection);
-    checkForFoodCollision(snakeHeadX, snakeHeadY);
+    if (foodCollisionOn) checkForFoodCollision(snakeHeadX, snakeHeadY);
 
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
         switch (allSnakeBodyElements[i].getAttribute("data-direction")) {
@@ -317,7 +319,7 @@ function moveSnakeForward() {
                 break;
         }
     }
-    checkForSnakeBodyCollision();
+    if (bodyCollisionOn) checkForSnakeBodyCollision();
 }
 
 
@@ -500,6 +502,9 @@ function startGame () {
     startingSnakeElements = startingSnakeElementsInput.value;
     tickSpeed = document.querySelector(".tick-speed-input").value;
     movementEase = document.querySelector(".movement-ease-input").value;
+    wallCollisionOn = document.querySelector(".wall-collision-input").checked;
+    bodyCollisionOn = document.querySelector(".body-collision-input").checked;
+    foodCollisionOn = document.querySelector(".food-collision-input").checked;
 
     /*
     allSnakeBodyElements[0].setAttribute('data-x', snakeHeadStartingX);
