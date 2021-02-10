@@ -171,10 +171,12 @@ h1 {
         height: 250px;
     }
 
+    /*
     .snake-body-element {
         width: 10px;
         height: 10px;
     }
+    */
 
     .snake-food {
         width: 10px;
