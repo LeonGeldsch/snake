@@ -580,7 +580,7 @@ function spawnFood () {
     snakeFood.setAttribute('data-y', snakeFoodY / gameAreaPixelSize);
 
     for (let i = 0; i < allSnakeBodyElements.length; i++) {
-        if (snakeFoodX == allSnakeBodyElements[i].getAttribute("data-x") && snakeFoodY == allSnakeBodyElements[i].getAttribute("data-y")) {
+        if (snakeFoodX / gameAreaPixelSize == allSnakeBodyElements[i].getAttribute("data-x") && snakeFoodY / gameAreaPixelSize == allSnakeBodyElements[i].getAttribute("data-y")) {
             spawnFood();
         }        
     }
