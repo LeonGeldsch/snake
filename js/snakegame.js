@@ -42,6 +42,12 @@ var snakeHeadStartingDirection = "right";
 
 var inputArray = [];
 
+var botPlaying = false;
+
+var preventInput = false;
+
+var botStartButton = document.querySelector('.bot-button');
+
 var movementEase = document.querySelector(".movement-ease-input").value;
 
 var wallCollisionOn = document.querySelector(".wall-collision-input").checked;
@@ -52,58 +58,18 @@ var keyDownListener = function(e) {
     if (e.code == "ArrowLeft") {
         console.log("left");
         inputArray.push("left");
-        /*
-        turnIntervalPaused = true;
-        movementIntervalPaused = true;
-        setTimeout(function () {
-            turnIntervalPaused = false;
-            movementIntervalPaused = false;
-        }), 1000;
-        moveSnakeForward();
-        turnSnake("left");
-        */
     }
     if (e.code == "ArrowRight") {
         console.log("right");
         inputArray.push("right");
-        /*
-        turnIntervalPaused = true;
-        movementIntervalPaused = true;
-        setTimeout(function () {
-            turnIntervalPaused = false;
-            movementIntervalPaused = false;
-        }), 1000;
-        moveSnakeForward();
-        turnSnake("right");
-        */
     }
     if (e.code == "ArrowUp") {
         console.log("up");
         inputArray.push("up");
-        /*
-        turnIntervalPaused = true;
-        movementIntervalPaused = true;
-        setTimeout(function () {
-            turnIntervalPaused = false;
-            movementIntervalPaused = false;
-        }), 1000;
-        moveSnakeForward();
-        turnSnake("up");
-        */
     }
     if (e.code == "ArrowDown") {
         console.log("down");
         inputArray.push("down");
-        /*
-        turnIntervalPaused = true;
-        movementIntervalPaused = true;
-        setTimeout(function () {
-            turnIntervalPaused = false;
-            movementIntervalPaused = false;
-        }), 1000;
-        moveSnakeForward();
-        turnSnake("down");
-        */
     }
 };
 
@@ -148,16 +114,9 @@ function checkForFoodCollision (snakeHeadX, snakeHeadY) {
         score++;
         console.log("YUM! score:", score);
         spawnFood();
-        //stopGame();
-
-        /*
-        let snakeEndX = allSnakeBodyElements[allSnakeBodyElements.length-1].getBoundingClientRect().left - allSnakeBodyElements[0].parentNode.getBoundingClientRect().left - 5;
-        let snakeEndY = allSnakeBodyElements[allSnakeBodyElements.length-1].getBoundingClientRect().top - allSnakeBodyElements[0].parentNode.getBoundingClientRect().top - 5;
-        */
         
         let snakeEndX = allSnakeBodyElements[allSnakeBodyElements.length-1].getAttribute("data-x");
         let snakeEndY = allSnakeBodyElements[allSnakeBodyElements.length-1].getAttribute("data-y");
-
         let snakeEndDirection = allSnakeBodyElements[allSnakeBodyElements.length-1].getAttribute("data-direction");
         let newSnakeElement = document.createElement("div");
         newSnakeElement.classList.add("snake-body-element");
@@ -595,6 +554,142 @@ function spawnFood () {
 
 
 /*
+ * ------------------------------ BOT FUNCTIONS ------------------------------------
+ */
+
+function botCheckForWall () {
+    let snakeHeadX = allSnakeBodyElements[0].getAttribute("data-x");
+    let snakeHeadY = allSnakeBodyElements[0].getAttribute("data-y");
+    let snakeHeadDirection = allSnakeBodyElements[0].getAttribute("data-direction");
+    let snakeFoodX = snakeFood.getAttribute("data-x");
+    let snakeFoodY = snakeFood.getAttribute("data-y");
+
+    let offsetX = snakeHeadX - snakeFoodX;
+    let offsetY = snakeHeadY - snakeFoodY;
+
+
+    if (!preventInput) {
+        if (snakeHeadX == gameAreaWidth-1 && snakeHeadDirection == "right") {
+            if (offsetY > 0) {
+                mobileButtonUp.click();
+                disableInputs();
+            }
+            if (offsetY < 0) {
+                mobileButtonDown.click();
+                disableInputs();
+            }
+            if (offsetY == 0) {
+                mobileButtonDown.click();
+                mobileButtonLeft.click();
+                disableInputs();
+            }
+        }
+        if (snakeHeadX <= 0 && snakeHeadDirection == "left") {
+            if (offsetY > 0) {
+                mobileButtonUp.click();
+                disableInputs();
+            }
+            if (offsetY < 0) {
+                mobileButtonDown.click();
+                disableInputs();
+            }
+            if (offsetY == 0) {
+                mobileButtonDown.click();
+                mobileButtonRight.click();
+                disableInputs();
+            }
+        }
+        if (snakeHeadY >= gameAreaHeight-1 && snakeHeadDirection == "down") {
+            if (offsetX > 0) {
+                mobileButtonLeft.click();
+                disableInputs();
+            }
+            if (offsetX < 0) {
+                mobileButtonRight.click();
+                disableInputs();
+            }
+            if (offsetX == 0) {
+                mobileButtonRight.click();
+                mobileButtonUp.click();
+                disableInputs();
+            }
+        }
+        if (snakeHeadY <= 0 && snakeHeadDirection == "up") {
+            if (offsetX > 0) {
+                mobileButtonLeft.click();
+                disableInputs();
+            }
+            if (offsetX < 0) {
+                mobileButtonRight.click();
+                disableInputs();
+            }
+            if (offsetX == 0) {
+                mobileButtonRight.click();
+                mobileButtonUp.click();
+                disableInputs();
+            }
+        }
+    }
+
+
+
+
+
+    //     if (snakeHeadX >= gameAreaWidth-1 && snakeHeadDirection == "right" || snakeHeadX <= 0 && snakeHeadDirection == "left" || snakeHeadY >= gameAreaHeight-1 && snakeHeadDirection == "down" || snakeHeadY <= 0 && snakeHeadDirection == "up") {
+}
+
+function botCheckForBody () {
+    let snakeHeadX = allSnakeBodyElements[0].getAttribute("data-x");
+    let snakeHeadY = allSnakeBodyElements[0].getAttribute("data-y");
+
+}
+
+function botSearchForFood () {
+    let snakeHeadX = allSnakeBodyElements[0].getAttribute("data-x");
+    let snakeHeadY = allSnakeBodyElements[0].getAttribute("data-y");
+    let snakeHeadDirection = allSnakeBodyElements[0].getAttribute("data-direction");
+    let snakeFoodX = snakeFood.getAttribute("data-x");
+    let snakeFoodY = snakeFood.getAttribute("data-y");
+
+    let offsetX = snakeHeadX - snakeFoodX;
+    let offsetY = snakeHeadY - snakeFoodY;
+
+    if (!preventInput) {
+        if (offsetY > 0 && snakeHeadDirection != "down") {
+            mobileButtonUp.click();
+            disableInputs();
+        }
+        if (offsetY < 0 && snakeHeadDirection != "up") {
+            mobileButtonDown.click();
+            disableInputs();
+        }
+        if (offsetY == 0) {
+            if (offsetX < 0 && snakeHeadDirection != "left") {
+                mobileButtonRight.click();
+                disableInputs();
+            }
+            if (offsetX > 0 && snakeHeadDirection != "right") {
+                mobileButtonLeft.click();
+                disableInputs();
+            }
+        }
+    }
+}
+
+function getFoodOffset () {
+}
+
+function disableInputs () {
+    preventInput = true;
+    setTimeout(function () {
+        preventInput = false;
+    }, tickSpeed * 500);
+}
+
+
+
+
+/*
  * ---------------------------- EVENT LISTENERS -----------------------------------
  */
 
@@ -626,8 +721,11 @@ window.addEventListener('resize', function () {
     snakeHeadStartingY = gameAreaHeight / 2;
 });
 
-startingSnakeElementsInput.addEventListener('click', function() {
-    console.log("test123");
-})
-
-
+botStartButton.addEventListener('click', function () {
+    botPlaying = true;
+    startGame();
+    var botInterval = setInterval(function () {
+        botCheckForWall();
+        botSearchForFood();
+    }, tickSpeed * 1000);
+});
